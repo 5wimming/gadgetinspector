@@ -42,6 +42,7 @@ public class WebserviceSourceDiscovery extends SourceDiscovery {
             for (String skipClass:skipList){
                 if (method.getClassReference().getName().contains(skipClass)){
                     skipFlag = true;
+                    break;
                 }
             }
             if (skipFlag){
