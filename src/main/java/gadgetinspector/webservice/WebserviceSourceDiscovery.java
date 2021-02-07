@@ -48,10 +48,6 @@ public class WebserviceSourceDiscovery extends SourceDiscovery {
                 continue;
             }
 
-            if (method.getClassReference().getName().contains("HomeController")){
-                System.out.println(method.getClassReference().getName()+ "--" +method.getName()+ "--" +method.getDesc());
-            }
-
             if (webserviceDecider.apply(method.getClassReference())) {
                 if (!method.getName().contains("<init>")
                         && (method.getDesc().contains("Ljavax/servlet/http/HttpServletRequest")

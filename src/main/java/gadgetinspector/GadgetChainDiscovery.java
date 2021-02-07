@@ -145,12 +145,6 @@ public class GadgetChainDiscovery {
       GadgetChain chain = methodsToExplore.pop();
       GadgetChainLink lastLink = chain.links.get(chain.links.size() - 1);
 
-      if (lastLink.method.getClassReference().getName().contains("EnvEntry") && lastLink.method.getName().contains("getValue")){
-        System.out.println(lastLink.method.getClassReference().getName());
-      }
-      if (lastLink.method.getClassReference().getName().contains("QuercusServlet") && lastLink.method.getName().contains("setJndiDatabase")){
-        System.out.println(lastLink.method.getClassReference().getName());
-      }
       //限定链长度
       if (chain.links.size() >= ConfigHelper.maxChainLength) {
         continue;
@@ -163,12 +157,6 @@ public class GadgetChainDiscovery {
           if (graphCall.getCallerArgIndex() != lastLink.taintedArgIndex
               && ConfigHelper.taintTrack) {
             continue;
-          }
-          if (lastLink.method.getClassReference().getName().contains("QuercusServlet") && lastLink.method.getName().contains("setJndiDatabase") && graphCall.getTargetMethod().getName().contains("lookup")){
-            System.out.println(lastLink.method.getClassReference().getName());
-          }
-          if (lastLink.method.getClassReference().getName().contains("EnvEntry") && lastLink.method.getName().contains("getValue") && graphCall.getTargetMethod().getName().contains("lookup")){
-            System.out.println(lastLink.method.getClassReference().getName());
           }
 
           Set<MethodReference.Handle> allImpls = implementationFinder

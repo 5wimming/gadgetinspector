@@ -26,7 +26,7 @@ public class ConfigHelper {
 
   public static int maxChainLength = Integer.MAX_VALUE;
   public static int maxRepeatBranchesTimes = 20;
-  public static int similarLevel = 3;
+  public static int similarLevel = 0;
 
   public static boolean craw = false;
   public static int crawMin = 0;

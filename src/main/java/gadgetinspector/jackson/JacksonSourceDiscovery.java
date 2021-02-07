@@ -56,7 +56,6 @@ public class JacksonSourceDiscovery extends SourceDiscovery {
                 }
                 if (method.getName().startsWith("set") && method.getDesc().matches("\\(L[^;]*;\\)V")) {
                     addDiscoveredSource(new Source(method, 0));
-                    //System.out.println(method.getClassReference().getName()+ "--" +method.getName()+ "--" +method.getDesc());
                 }
             }
         }

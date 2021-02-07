@@ -165,10 +165,6 @@ public class MethodDiscovery {
         @Override
         public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
             boolean isStatic = (access & Opcodes.ACC_STATIC) != 0;
-            //找到一个方法，添加到缓存
-            if (name.equals("auth")){
-                System.out.println(name);
-            }
 
             //return super.visitMethod(access, name, desc, signature, exceptions);
             return new MethodAnnotationScanner(classHandle, name, desc, isStatic);
