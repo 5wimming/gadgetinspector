@@ -1,0 +1,2 @@
+java/rmi/registry/Registry lookup (Ljava/lang/String;)Ljava/rmi/Remote;
+javax/naming/Context lookup

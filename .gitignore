@@ -1,0 +1,8 @@
+/build/
+/.gradle/
+/.idea/
+/*.dat
+/*.bak
+/history
+/gadget-result
+/conf
