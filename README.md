@@ -1,4 +1,28 @@
-PS：
+
+优化了一些功能，如jackson利用链挖掘等。并增加了web项目扫描策略，source点为路由入口，使用命令：
+```
+--config
+webservice
+--noTaintTrack
+--maxChainLength
+16
+--similarLevel
+4
+--maxRepeatBranchesTimes
+50
+--skipSourcesFile
+/myGadgetinspector/webservice-skip-sources.demo
+/Users/rym/all/temp/halo.jar
+```
+参数介绍：
+--similarLevel n:解决路径爆炸，即中间路径重复率过高的问题，对每条链，会取它的前n条链和最后1条链作为去重因子，如有重复，则取最短链
+--maxRepeatBranchesTimes n:表示某个分支函数最多可以出现在所有利用链中几次，默认20
+
+文件说明：
+webservice-skip-sources.demo为需要忽略的路由类
+
+
+## threedr3am版本https://github.com/threedr3am/gadgetinspector
 ================
 ##### 一、加入了Fastjson的gadget chain挖掘
 
@@ -57,7 +81,7 @@ slink暂时只加入了JdbcTemplate的检测，后续慢慢加入mybatis、原�
 18. --skipSourcesFile /xxx/xxxx/xxx.txt: 跳过哪些经常误报的class source，参考文件fastjson-skip-sources.demo
 19. --slinksFile /xxx/xxxx/xxx.txt: 自定义挖掘的slinks，使用后--slink参数忽略，参考文件fastjson-slinks.demo
 
-Gadget Inspector
+## JackOfMostTrades版本https://github.com/JackOfMostTrades/gadgetinspector
 ================
 
 This project inspects Java libraries and classpaths for gadget chains. Gadgets chains are used to construct exploits for deserialization vulnerabilities. By automatically discovering possible gadgets chains in an application's classpath penetration testers can quickly construct exploits and application security engineers can assess the impact of a deserialization vulnerability and prioritize its remediation.
