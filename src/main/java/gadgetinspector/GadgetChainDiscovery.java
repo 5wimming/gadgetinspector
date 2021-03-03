@@ -572,6 +572,10 @@ public class GadgetChainDiscovery {
         .equals("openStream")) {
       return true;
     }
+    if (method.getClassReference().getName().equals("org/springframework/web/multipart/MultipartFile") && method.getName()
+            .equals("transferTo")) {
+      return true;
+    }
     return false;
   }
 
