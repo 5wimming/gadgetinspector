@@ -1,4 +1,194 @@
-PS：
+
+优化了一些功能，如jackson利用链挖掘等。并增加了web项目扫描策略，source点为路由入口，使用命令：
+```
+--config
+webservice
+--noTaintTrack
+--maxChainLength
+16
+--similarLevel
+4
+--maxRepeatBranchesTimes
+50
+--skipSourcesFile
+/myGadgetinspector/webservice-skip-sources.demo
+/temp/halo.jar
+```
+参数介绍：
+
+--similarLevel n:解决路径爆炸，即中间路径重复率过高的问题，对每条链，会取它的前n条链和最后1条链作为去重因子，如有重复，则取最短链
+
+--maxRepeatBranchesTimes n:表示某个分支函数最多可以出现在所有利用链中几次，默认20
+
+文件说明：
+webservice-skip-sources.demo为需要忽略的路由类
+
+如halo开源项目扫描结果如下：
+```
+Using classpath: [/temp/halo.jar]
+run/halo/app/controller/content/ContentArchiveController.password(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; (0)
+  java/lang/String.format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String; (0)
+  java/util/Formatter.format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/util/Formatter; (0)
+  java/util/Formatter.format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/util/Formatter; (0)
+  java/util/Formatter.parse(Ljava/lang/String;)[Ljava/util/Formatter$FormatString; (0)
+  java/util/regex/Pattern.matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher; (0)
+  java/util/regex/Pattern.compile()V (0)
+  java/util/regex/Pattern.expr(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.sequence(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.family(ZZ)Ljava/util/regex/Pattern$CharProperty; (0)
+  java/util/regex/UnicodeProp.forName(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/util/regex/UnicodeProp.valueOf(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/lang/Enum.valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; (0)
+  java/lang/Class.enumConstantDirectory()Ljava/util/Map; (0)
+  java/lang/Class.getEnumConstantsShared()[Ljava/lang/Object; (0)
+  java/lang/reflect/Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0)
+
+run/halo/app/controller/content/ContentArchiveController.post(Ljava/lang/String;Ljava/lang/String;Lorg/springframework/ui/Model;)Ljava/lang/String; (0)
+  run/halo/app/utils/MarkdownUtils.renderHtml(Ljava/lang/String;)Ljava/lang/String; (0)
+  java/lang/String.replaceAll(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; (0)
+  java/util/regex/Pattern.compile(Ljava/lang/String;)Ljava/util/regex/Pattern; (0)
+  java/util/regex/Pattern.<init>(Ljava/lang/String;I)V (0)
+  java/util/regex/Pattern.compile()V (0)
+  java/util/regex/Pattern.expr(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.sequence(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.family(ZZ)Ljava/util/regex/Pattern$CharProperty; (0)
+  java/util/regex/UnicodeProp.forName(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/util/regex/UnicodeProp.valueOf(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/lang/Enum.valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; (0)
+  java/lang/Class.enumConstantDirectory()Ljava/util/Map; (0)
+  java/lang/Class.getEnumConstantsShared()[Ljava/lang/Object; (0)
+  java/lang/reflect/Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0)
+
+run/halo/app/controller/admin/api/PostController.createBy(Lrun/halo/app/model/params/PostParam;Ljava/lang/Boolean;)Lrun/halo/app/model/vo/PostDetailVO; (0)
+  run/halo/app/model/params/PostParam.convertTo()Lrun/halo/app/model/entity/Post; (0)
+  run/halo/app/utils/SlugUtils.slug(Ljava/lang/String;)Ljava/lang/String; (0)
+  java/lang/String.replaceAll(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; (0)
+  java/util/regex/Pattern.matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher; (0)
+  java/util/regex/Pattern.compile()V (0)
+  java/util/regex/Pattern.expr(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.sequence(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.family(ZZ)Ljava/util/regex/Pattern$CharProperty; (0)
+  java/util/regex/UnicodeProp.forPOSIXName(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/util/regex/UnicodeProp.valueOf(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/lang/Enum.valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; (0)
+  java/lang/Class.enumConstantDirectory()Ljava/util/Map; (0)
+  java/lang/Class.getEnumConstantsShared()[Ljava/lang/Object; (0)
+  java/lang/reflect/Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0)
+
+run/halo/app/controller/content/ContentSheetController.sheet(Ljava/lang/String;Ljava/lang/String;Lorg/springframework/ui/Model;)Ljava/lang/String; (0)
+  run/halo/app/utils/MarkdownUtils.renderHtml(Ljava/lang/String;)Ljava/lang/String; (0)
+  java/lang/String.replaceAll(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; (0)
+  java/util/regex/Pattern.compile(Ljava/lang/String;)Ljava/util/regex/Pattern; (0)
+  java/util/regex/Pattern.<init>(Ljava/lang/String;I)V (0)
+  java/util/regex/Pattern.compile()V (0)
+  java/util/regex/Pattern.expr(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.sequence(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.family(ZZ)Ljava/util/regex/Pattern$CharProperty; (0)
+  java/util/regex/UnicodeProp.forName(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/util/regex/UnicodeProp.valueOf(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/lang/Enum.valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; (0)
+  java/lang/Class.enumConstantDirectory()Ljava/util/Map; (0)
+  java/lang/Class.getEnumConstantsShared()[Ljava/lang/Object; (0)
+  java/lang/reflect/Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0)
+
+run/halo/app/controller/content/ContentArchiveController.post(Ljava/lang/String;Ljava/lang/String;Lorg/springframework/ui/Model;)Ljava/lang/String; (0)
+  run/halo/app/utils/MarkdownUtils.renderHtml(Ljava/lang/String;)Ljava/lang/String; (0)
+  java/lang/String.replaceAll(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; (0)
+  java/util/regex/Pattern.matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher; (0)
+  java/util/regex/Pattern.compile()V (0)
+  java/util/regex/Pattern.expr(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.sequence(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.family(ZZ)Ljava/util/regex/Pattern$CharProperty; (0)
+  java/util/regex/UnicodeProp.forName(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/util/regex/UnicodeProp.valueOf(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/lang/Enum.valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; (0)
+  java/lang/Class.enumConstantDirectory()Ljava/util/Map; (0)
+  java/lang/Class.getEnumConstantsShared()[Ljava/lang/Object; (0)
+  java/lang/reflect/Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0)
+
+run/halo/app/controller/admin/api/SheetController.createBy(Lrun/halo/app/model/params/SheetParam;Ljava/lang/Boolean;)Lrun/halo/app/model/vo/SheetDetailVO; (0)
+  run/halo/app/model/params/SheetParam.convertTo()Lrun/halo/app/model/entity/Sheet; (0)
+  run/halo/app/utils/SlugUtils.slug(Ljava/lang/String;)Ljava/lang/String; (0)
+  java/lang/String.replaceAll(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; (0)
+  java/util/regex/Pattern.matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher; (0)
+  java/util/regex/Pattern.compile()V (0)
+  java/util/regex/Pattern.expr(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.sequence(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.family(ZZ)Ljava/util/regex/Pattern$CharProperty; (0)
+  java/util/regex/UnicodeProp.forPOSIXName(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/util/regex/UnicodeProp.valueOf(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/lang/Enum.valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; (0)
+  java/lang/Class.enumConstantDirectory()Ljava/util/Map; (0)
+  java/lang/Class.getEnumConstantsShared()[Ljava/lang/Object; (0)
+  java/lang/reflect/Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0)
+
+run/halo/app/controller/admin/api/PostController.updateBy(Lrun/halo/app/model/params/PostParam;Ljava/lang/Integer;Ljava/lang/Boolean;)Lrun/halo/app/model/vo/PostDetailVO; (0)
+  run/halo/app/model/params/PostParam.update(Lrun/halo/app/model/entity/Post;)V (0)
+  run/halo/app/utils/SlugUtils.slug(Ljava/lang/String;)Ljava/lang/String; (0)
+  java/lang/String.replaceAll(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; (0)
+  java/util/regex/Pattern.matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher; (0)
+  java/util/regex/Pattern.compile()V (0)
+  java/util/regex/Pattern.expr(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.sequence(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.family(ZZ)Ljava/util/regex/Pattern$CharProperty; (0)
+  java/util/regex/UnicodeProp.forPOSIXName(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/util/regex/UnicodeProp.valueOf(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/lang/Enum.valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; (0)
+  java/lang/Class.enumConstantDirectory()Ljava/util/Map; (0)
+  java/lang/Class.getEnumConstantsShared()[Ljava/lang/Object; (0)
+  java/lang/reflect/Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0)
+
+run/halo/app/controller/content/ContentArchiveController.post(Ljava/lang/String;Ljava/lang/String;Lorg/springframework/ui/Model;)Ljava/lang/String; (0)
+  java/lang/String.format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String; (0)
+  java/util/Formatter.format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/util/Formatter; (0)
+  java/util/Formatter.format(Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/util/Formatter; (0)
+  java/util/Formatter.parse(Ljava/lang/String;)[Ljava/util/Formatter$FormatString; (0)
+  java/util/regex/Pattern.matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher; (0)
+  java/util/regex/Pattern.compile()V (0)
+  java/util/regex/Pattern.expr(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.sequence(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.family(ZZ)Ljava/util/regex/Pattern$CharProperty; (0)
+  java/util/regex/UnicodeProp.forName(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/util/regex/UnicodeProp.valueOf(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/lang/Enum.valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; (0)
+  java/lang/Class.enumConstantDirectory()Ljava/util/Map; (0)
+  java/lang/Class.getEnumConstantsShared()[Ljava/lang/Object; (0)
+  java/lang/reflect/Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0)
+
+run/halo/app/controller/admin/api/SheetController.updateBy(Ljava/lang/Integer;Lrun/halo/app/model/params/SheetParam;Ljava/lang/Boolean;)Lrun/halo/app/model/vo/SheetDetailVO; (0)
+  run/halo/app/model/params/SheetParam.update(Lrun/halo/app/model/entity/Sheet;)V (0)
+  run/halo/app/utils/SlugUtils.slug(Ljava/lang/String;)Ljava/lang/String; (0)
+  java/lang/String.replaceAll(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; (0)
+  java/util/regex/Pattern.matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher; (0)
+  java/util/regex/Pattern.compile()V (0)
+  java/util/regex/Pattern.expr(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.sequence(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.family(ZZ)Ljava/util/regex/Pattern$CharProperty; (0)
+  java/util/regex/UnicodeProp.forName(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/util/regex/UnicodeProp.valueOf(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/lang/Enum.valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; (0)
+  java/lang/Class.enumConstantDirectory()Ljava/util/Map; (0)
+  java/lang/Class.getEnumConstantsShared()[Ljava/lang/Object; (0)
+  java/lang/reflect/Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0)
+
+run/halo/app/controller/content/ContentSheetController.sheet(Ljava/lang/String;Ljava/lang/String;Lorg/springframework/ui/Model;)Ljava/lang/String; (0)
+  run/halo/app/utils/MarkdownUtils.renderHtml(Ljava/lang/String;)Ljava/lang/String; (0)
+  java/lang/String.replaceAll(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; (0)
+  java/util/regex/Pattern.matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher; (0)
+  java/util/regex/Pattern.compile()V (0)
+  java/util/regex/Pattern.expr(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.sequence(Ljava/util/regex/Pattern$Node;)Ljava/util/regex/Pattern$Node; (0)
+  java/util/regex/Pattern.family(ZZ)Ljava/util/regex/Pattern$CharProperty; (0)
+  java/util/regex/UnicodeProp.forPOSIXName(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/util/regex/UnicodeProp.valueOf(Ljava/lang/String;)Ljava/util/regex/UnicodeProp; (0)
+  java/lang/Enum.valueOf(Ljava/lang/Class;Ljava/lang/String;)Ljava/lang/Enum; (0)
+  java/lang/Class.enumConstantDirectory()Ljava/util/Map; (0)
+  java/lang/Class.getEnumConstantsShared()[Ljava/lang/Object; (0)
+  java/lang/reflect/Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object; (0)
+
+```
+
+## threedr3am版本https://github.com/threedr3am/gadgetinspector
 ================
 ##### 一、加入了Fastjson的gadget chain挖掘
 
@@ -57,7 +247,7 @@ slink暂时只加入了JdbcTemplate的检测，后续慢慢加入mybatis、原�
 18. --skipSourcesFile /xxx/xxxx/xxx.txt: 跳过哪些经常误报的class source，参考文件fastjson-skip-sources.demo
 19. --slinksFile /xxx/xxxx/xxx.txt: 自定义挖掘的slinks，使用后--slink参数忽略，参考文件fastjson-slinks.demo
 
-Gadget Inspector
+## JackOfMostTrades版本https://github.com/JackOfMostTrades/gadgetinspector
 ================
 
 This project inspects Java libraries and classpaths for gadget chains. Gadgets chains are used to construct exploits for deserialization vulnerabilities. By automatically discovering possible gadgets chains in an application's classpath penetration testers can quickly construct exploits and application security engineers can assess the impact of a deserialization vulnerability and prioritize its remediation.
