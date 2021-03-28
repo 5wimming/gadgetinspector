@@ -118,6 +118,13 @@ public class PassthroughDiscovery {
             if (method.getName().equals("<clinit>")) {
                 continue;
             }
+            if (method.getClassReference().getName().equals("java/io/ObjectInputStream")
+                    && method.getName().equals("<init>")
+                    && method.getDesc().contains("InputStream;")){
+                passthroughDataflow.put(method, Collections.singleton(0));
+                System.out.println("test by 5wimming");
+                continue;
+            }
             //获取所属类进行观察
             ClassResourceEnumerator.ClassResource classResource = classResourceByName.get(method.getClassReference().getName());
             try (InputStream inputStream = classResource.getInputStream()) {
@@ -125,7 +132,7 @@ public class PassthroughDiscovery {
                 try {
                     PassthroughDataflowClassVisitor cv = new PassthroughDataflowClassVisitor(classMap, inheritanceMap,
                             passthroughDataflow, serializableDecider, Opcodes.ASM6, method);
-                    cr.accept(cv, ClassReader.EXPAND_FRAMES);
+                    cr.accept(cv, ClassReader.EXPAND_FRAMES); //通过结合classMap、inheritanceMap、已判定出的passthroughDataflow结果、序列化决定器信息来判定当前method的返回值与参数的关系
                     passthroughDataflow.put(method, cv.getReturnTaint());//缓存方法返回值与哪个参数有关系
                 } catch (Exception e) {
                     LOGGER.error("Exception analyzing " + method.getClassReference().getName(), e);

@@ -1,9 +1,9 @@
-package gadgetinspector.webservice;
+package gadgetinspector.newxstream;
 
 import gadgetinspector.ConfigHelper;
 import gadgetinspector.SourceDiscovery;
 import gadgetinspector.data.*;
-import gadgetinspector.jackson.JacksonSerializableDecider;
+import gadgetinspector.webservice.WebserviceSerializableDecider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class WebserviceSourceDiscovery extends SourceDiscovery {
+public class NewXstreamSourceDiscovery extends SourceDiscovery {
     public static final Set<String> skipList = new HashSet<>();
 
     static {
@@ -34,7 +34,7 @@ public class WebserviceSourceDiscovery extends SourceDiscovery {
 
     @Override
     public void discover(Map<ClassReference.Handle, ClassReference> classMap, Map<MethodReference.Handle, MethodReference> methodMap, InheritanceMap inheritanceMap, Map<MethodReference.Handle, Set<GraphCall>> graphCallMap) {
-        final WebserviceSerializableDecider webserviceDecider = new WebserviceSerializableDecider(methodMap);
+        final NewXstremSerializableDecider newXstreamDecider = new NewXstremSerializableDecider(methodMap);
 
         for (MethodReference.Handle method : methodMap.keySet()) {
             MethodReference methodValue = methodMap.get(method);
@@ -48,25 +48,14 @@ public class WebserviceSourceDiscovery extends SourceDiscovery {
             if (skipFlag){
                 continue;
             }
-
-            if (webserviceDecider.apply(method.getClassReference())) {
-                if (!method.getName().contains("<init>")
-                        && (method.getDesc().contains("Ljavax/servlet/http/HttpServletRequest")
-                        || method.getDesc().contains("Ljavax/servlet/ServletRequest")
-                        || method.getDesc().contains("Ljavax/xml/ws/handler/soap/SOAPMessageContext")
-                        || method.getDesc().contains("Ljavax/xml/ws/handler/MessageContext")
-                        || method.getDesc().contains("Ljavax/xml/rpc/handler/soap/SOAPMessageContext")
-                        || method.getDesc().contains("Lorg/apache/cxf/message/Message")
-                        || method.getDesc().contains("Lorg/aopalliance/intercept/MethodInvocation")
-                        || methodValue.getMethodAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/RequestMapping")
-                        || methodValue.getMethodAnnotationDesc().contains("Ljavax/ws/rs/Path")
-                        || methodValue.getParameterAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/RequestParam")
-                        || methodValue.getParameterAnnotationDesc().contains("Ljavax/ws/rs/QueryParam")
-                        || methodValue.getParameterAnnotationDesc().contains("Ljavax/ws/PathParam")))
+            if (newXstreamDecider.apply(method.getClassReference())) {
+                if (method.getClassReference().getName().equals("jdk/nashorn/internal/objects/NativeString")
+                        && method.getName().equals("hashCode") && method.getDesc().contains("()"))
                 {
                     addDiscoveredSource(new Source(method, 0));
                 }
             }
+
         }
     }
 }

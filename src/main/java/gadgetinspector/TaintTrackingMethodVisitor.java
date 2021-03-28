@@ -5,6 +5,7 @@ import gadgetinspector.data.InheritanceMap;
 import gadgetinspector.data.MethodReference;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.AnalyzerAdapter;
+import java.util.regex.*;
 
 import java.util.*;
 
@@ -678,6 +679,10 @@ public class TaintTrackingMethodVisitor<T> extends MethodVisitor {
                 //污染例外关联，不通过参数关联
                 // If calling defaultReadObject on a tainted ObjectInputStream, that taint passes to "this"
                 if (owner.equals("java/io/ObjectInputStream") && name.equals("defaultReadObject") && desc.equals("()V")) {
+                    savedVariableState.localVars.get(0).addAll(argTaint.get(0));
+                }
+
+                if (owner.equals("java/io/ObjectInputStream") && name.equals("<init>") && Pattern.matches(".*Ljava/io/InputStream;.*", desc)) {
                     savedVariableState.localVars.get(0).addAll(argTaint.get(0));
                 }
 

@@ -12,7 +12,8 @@ public class ConfigRepository {
             new FastjsonDeserializationConfig(),
             new SQLInjectDeserializationConfig(),
             new HessianDeserializationConfig(),
-            new WebserviceDeserializationConfig()
+            new WebserviceDeserializationConfig(),
+            new NewXstreamDeserializationConfig()
     ));
 
     public static GIConfig getConfig(String name) {

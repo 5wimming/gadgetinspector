@@ -158,6 +158,13 @@ public class GadgetChainDiscovery {
               && ConfigHelper.taintTrack) {
             continue;
           }
+          if (graphCall.getTargetMethod().getClassReference().getName().contains("com/project/webapp/controller")){
+            System.out.println("test by 5wimming");
+          }
+          if (graphCall.getTargetMethod().getName().contains("search")){
+            System.out.println("search");
+          }
+
 
           Set<MethodReference.Handle> allImpls = implementationFinder
               .getImplementations(graphCall.getTargetMethod());
@@ -421,6 +428,9 @@ public class GadgetChainDiscovery {
     if ((ConfigHelper.slinks.isEmpty() || ConfigHelper.slinks.contains("expression")) && ExpressionSlink(method)) {
       return true;
     }
+    if ((ConfigHelper.slinks.isEmpty() || ConfigHelper.slinks.contains("newXstream")) && isNewXstreamSink(method, argIndex, inheritanceMap)) {
+      return true;
+    }
     return false;
   }
   private boolean ExpressionSlink(Handle method) {
@@ -616,9 +626,12 @@ public class GadgetChainDiscovery {
     return false;
   }
 
-  private boolean isFastjsonSink(Handle method, int argIndex, InheritanceMap inheritanceMap) {
+  private boolean isNewXstreamSink(Handle method, int argIndex, InheritanceMap inheritanceMap) {
 
-
+    if (method.getName().equals("toString")
+            & method.getClassReference().getName().contains("java/lang/CharSequence")) {
+      return true;
+    }
     return false;
   }
 

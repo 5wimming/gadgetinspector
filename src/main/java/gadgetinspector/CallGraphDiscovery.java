@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class CallGraphDiscovery {
     private static final Logger LOGGER = LoggerFactory.getLogger(CallGraphDiscovery.class);
@@ -214,6 +215,11 @@ public class CallGraphDiscovery {
         @Override
         public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
             //获取被调用method的参数和类型，非静态方法需要把实例类型放在第一个元素
+            ClassReference.Handle classReferenceTest = new ClassReference.Handle(this.owner);
+            if (classReferenceTest.getName().contains("com/project/webapp/controller/UserController")
+                    && new ClassReference.Handle(owner).getName().contains("java/io/ObjectInputStream")){
+                System.out.println("test by 5wiming");
+            }
             Type[] argTypes = Type.getArgumentTypes(desc);
             if (opcode != Opcodes.INVOKESTATIC) {
                 Type[] extendedArgTypes = new Type[argTypes.length+1];
@@ -262,6 +268,7 @@ public class CallGraphDiscovery {
                                 }
                                 //记录参数流动关系
                                 //argIndex：当前方法参数索引，srcArgIndex：对应上一级方法的参数索引
+
                                 discoveredCalls.add(new GraphCall(
                                         new MethodReference.Handle(new ClassReference.Handle(this.owner), this.name, this.desc),
                                         new MethodReference.Handle(new ClassReference.Handle(owner), name, desc),
