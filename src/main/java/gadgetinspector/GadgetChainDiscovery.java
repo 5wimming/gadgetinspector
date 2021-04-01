@@ -161,10 +161,6 @@ public class GadgetChainDiscovery {
           if (graphCall.getTargetMethod().getClassReference().getName().contains("com/project/webapp/controller")){
             System.out.println("test by 5wimming");
           }
-          if (graphCall.getTargetMethod().getName().contains("search")){
-            System.out.println("search");
-          }
-
 
           Set<MethodReference.Handle> allImpls = implementationFinder
               .getImplementations(graphCall.getTargetMethod());

@@ -49,8 +49,7 @@ public class NewXstreamSourceDiscovery extends SourceDiscovery {
                 continue;
             }
             if (newXstreamDecider.apply(method.getClassReference())) {
-                if (method.getClassReference().getName().equals("jdk/nashorn/internal/objects/NativeString")
-                        && method.getName().equals("hashCode") && method.getDesc().contains("()"))
+                if (method.getName().equals("hashCode") && method.getDesc().contains("()"))
                 {
                     addDiscoveredSource(new Source(method, 0));
                 }
