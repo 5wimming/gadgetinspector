@@ -158,9 +158,9 @@ public class GadgetChainDiscovery {
               && ConfigHelper.taintTrack) {
             continue;
           }
-          if (graphCall.getTargetMethod().getClassReference().getName().contains("com/project/webapp/controller")){
-            System.out.println("test by 5wimming");
-          }
+//          if (graphCall.getTargetMethod().getClassReference().getName().contains("com/project/webapp/controller")){
+//            System.out.println("test by 5wimming");
+//          }
 
           Set<MethodReference.Handle> allImpls = implementationFinder
               .getImplementations(graphCall.getTargetMethod());
@@ -570,8 +570,11 @@ public class GadgetChainDiscovery {
         || method.getName().equals("newBufferedWriter"))) {
       return true;
     }
-    if (method.getClassReference().getName().equals("java/nio/file/Files") && method.getName()
-            .equals("newOutputStream")) {
+    if (method.getClassReference().getName().equals("java/nio/file/Files") && (method.getName()
+            .equals("newOutputStream"))) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("java/nio/file/Paths") && method.getName().equals("get")) {
       return true;
     }
     if (method.getClassReference().getName().equals("java/net/URL") && method.getName()

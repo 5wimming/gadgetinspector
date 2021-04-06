@@ -50,6 +50,9 @@ public class WebserviceSourceDiscovery extends SourceDiscovery {
             }
 
             if (webserviceDecider.apply(method.getClassReference())) {
+                if(method.getClassReference().getName().contains("org/joychou/controller/PathTraversal")){
+                    System.out.println("");
+                }
                 if (!method.getName().contains("<init>")
                         && (method.getDesc().contains("Ljavax/servlet/http/HttpServletRequest")
                         || method.getDesc().contains("Ljavax/servlet/ServletRequest")
@@ -60,6 +63,8 @@ public class WebserviceSourceDiscovery extends SourceDiscovery {
                         || method.getDesc().contains("Lorg/aopalliance/intercept/MethodInvocation")
                         || methodValue.getMethodAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/RequestMapping")
                         || methodValue.getMethodAnnotationDesc().contains("Ljavax/ws/rs/Path")
+                        || methodValue.getMethodAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/GetMapping")
+                        || methodValue.getMethodAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/PostMapping")
                         || methodValue.getParameterAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/RequestParam")
                         || methodValue.getParameterAnnotationDesc().contains("Ljavax/ws/rs/QueryParam")
                         || methodValue.getParameterAnnotationDesc().contains("Ljavax/ws/PathParam")))
