@@ -271,8 +271,25 @@ public class GadgetChainDiscovery {
       }
     }
 
-    Set<GadgetChain> repeatSim = new HashSet<>();
+    TreeSet<GadgetChain> treeSets = new TreeSet<>(new Comparator<GadgetChain>() {
+      @Override
+      public int compare(GadgetChain o1, GadgetChain o2) {
+        int compareResult = o1.links.size() - o2.links.size();
+        if (compareResult == 0){
+          return -1;
+        }
+        return compareResult;
+
+      }
+    });
+
     if (!discoveredGadgets.isEmpty()) {
+
+      for (GadgetChain chain : discoveredGadgets) {
+        if(!treeSets.contains(chain)){
+          treeSets.add(chain);
+        }
+      }
       SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
       try (OutputStream outputStream = Files
           .newOutputStream(
@@ -282,14 +299,14 @@ public class GadgetChainDiscovery {
         if (pathList != null) {
           writer.write("Using classpath: " + Arrays.toString(pathList.toArray()) + "\n");
         }
-        for (GadgetChain chain : discoveredGadgets) {
+        for (GadgetChain chain : treeSets) {
 
           printGadgetChain(writer, chain);
         }
       }
     }
 
-    LOGGER.info("Found {} gadget chains.", discoveredGadgets.size());
+    LOGGER.info("Found {} gadget chains.", treeSets.size());
   }
 
   private static void printGadgetChain(Writer writer, GadgetChain chain) throws IOException {
