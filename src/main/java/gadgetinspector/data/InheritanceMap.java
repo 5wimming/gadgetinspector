@@ -38,7 +38,7 @@ public class InheritanceMap {
         if (parents == null) {
             return false;
         }
-        return parents.contains(superClass);
+        return parents.contains(superClass) || clazz.getName().equals(superClass.getName());
     }
 
     public Set<ClassReference.Handle> getSubClasses(ClassReference.Handle clazz) {

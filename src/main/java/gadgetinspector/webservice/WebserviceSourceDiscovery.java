@@ -50,9 +50,9 @@ public class WebserviceSourceDiscovery extends SourceDiscovery {
             }
 
             if (webserviceDecider.apply(method.getClassReference())) {
-                if(method.getClassReference().getName().contains("org/joychou/controller/PathTraversal")){
-                    System.out.println("");
-                }
+//                if(method.getClassReference().getName().contains("org/joychou/controller/PathTraversal")){
+//                    System.out.println("test by 5wimming");
+//                }
                 if (!method.getName().contains("<init>")
                         && (method.getDesc().contains("Ljavax/servlet/http/HttpServletRequest")
                         || method.getDesc().contains("Ljavax/servlet/ServletRequest")

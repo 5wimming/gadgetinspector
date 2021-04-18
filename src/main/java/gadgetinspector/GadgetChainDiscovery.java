@@ -158,9 +158,10 @@ public class GadgetChainDiscovery {
               && ConfigHelper.taintTrack) {
             continue;
           }
-//          if (graphCall.getTargetMethod().getClassReference().getName().contains("com/project/webapp/controller")){
-//            System.out.println("test by 5wimming");
-//          }
+          if (graphCall.getCallerMethod().getClassReference().getName().contains("org/joychou/controller/XXE")
+                  && graphCall.getCallerMethod().getName().contains("xmlReaderVuln")){
+            System.out.println("test by 5wimming");
+          }
 
           Set<MethodReference.Handle> allImpls = implementationFinder
               .getImplementations(graphCall.getTargetMethod());
@@ -270,7 +271,7 @@ public class GadgetChainDiscovery {
       }
     }
 
-
+    Set<GadgetChain> repeatSim = new HashSet<>();
     if (!discoveredGadgets.isEmpty()) {
       SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");
       try (OutputStream outputStream = Files
@@ -282,6 +283,7 @@ public class GadgetChainDiscovery {
           writer.write("Using classpath: " + Arrays.toString(pathList.toArray()) + "\n");
         }
         for (GadgetChain chain : discoveredGadgets) {
+
           printGadgetChain(writer, chain);
         }
       }
@@ -424,7 +426,10 @@ public class GadgetChainDiscovery {
     if ((ConfigHelper.slinks.isEmpty() || ConfigHelper.slinks.contains("expression")) && ExpressionSlink(method)) {
       return true;
     }
-    if ((ConfigHelper.slinks.isEmpty() || ConfigHelper.slinks.contains("newXstream")) && isNewXstreamSink(method, argIndex, inheritanceMap)) {
+    if ((ConfigHelper.slinks.isEmpty() || ConfigHelper.slinks.contains("webservice")) && WebServiceSlink(method, argIndex, inheritanceMap)) {
+      return true;
+    }
+    if ((ConfigHelper.slinks.contains("newXstream")) && isNewXstreamSink(method, argIndex, inheritanceMap)) {
       return true;
     }
     return false;
@@ -613,6 +618,10 @@ public class GadgetChainDiscovery {
         && method.getName().equals("<init>") && argIndex > 0) {
       return true;
     }
+    if (method.getClassReference().getName().equals("javax/script/ScriptEngine")
+            && method.getName().equals("eval") && argIndex > 0) {
+      return true;
+    }
     return false;
   }
 
@@ -621,6 +630,29 @@ public class GadgetChainDiscovery {
         && method.getName().equals("forName")
         && method.getDesc().equals("(Ljava/lang/String;ZLjava/lang/ClassLoader;)Ljava/lang/Class;")) {
         return true;
+    }
+    return false;
+  }
+  private boolean WebServiceSlink(Handle method, int argIndex, InheritanceMap inheritanceMap) {
+    if (method.getClassReference().getName().equals("javax/imageio/ImageIO")
+            && method.getName().equals("read")) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("Ljava/net/URL")
+            && (method.getName().equals("<init>") || method.getName().equals("openConnection") || method.getName().equals("openStream"))) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("org/apache/http/impl/client/CloseableHttpClient")
+            && method.getName().equals("execute")) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("org/apache/commons/httpclient/HttpClient")
+            && method.getName().equals("executeMethod")) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("Ljava/net/URLConnection")
+            && (method.getName().equals("connect") || method.getName().equals("getInputStream"))) {
+      return true;
     }
     return false;
   }
