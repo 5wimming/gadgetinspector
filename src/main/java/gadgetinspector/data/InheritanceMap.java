@@ -34,11 +34,14 @@ public class InheritanceMap {
     }
 
     public boolean isSubclassOf(ClassReference.Handle clazz, ClassReference.Handle superClass) {
+        if(clazz.getName().equals(superClass.getName())){
+            return true;
+        }
         Set<ClassReference.Handle> parents = inheritanceMap.get(clazz);
         if (parents == null) {
             return false;
         }
-        return parents.contains(superClass) || clazz.getName().equals(superClass.getName());
+        return parents.contains(superClass);
     }
 
     public Set<ClassReference.Handle> getSubClasses(ClassReference.Handle clazz) {

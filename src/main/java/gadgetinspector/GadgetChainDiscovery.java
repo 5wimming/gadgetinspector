@@ -158,8 +158,8 @@ public class GadgetChainDiscovery {
               && ConfigHelper.taintTrack) {
             continue;
           }
-          if (graphCall.getCallerMethod().getClassReference().getName().contains("org/joychou/controller/XXE")
-                  && graphCall.getCallerMethod().getName().contains("xmlReaderVuln")){
+          if (graphCall.getCallerMethod().getClassReference().getName().contains("org/controller/XXE")
+                  && graphCall.getCallerMethod().getName().contains("SAXReader")){
             System.out.println("test by 5wimming");
           }
 
@@ -651,15 +651,20 @@ public class GadgetChainDiscovery {
     return false;
   }
   private boolean WebServiceSlink(Handle method, int argIndex, InheritanceMap inheritanceMap) {
+    // SSRF
     if (method.getClassReference().getName().equals("javax/imageio/ImageIO")
             && method.getName().equals("read")) {
       return true;
     }
-    if (method.getClassReference().getName().equals("Ljava/net/URL")
-            && (method.getName().equals("<init>") || method.getName().equals("openConnection") || method.getName().equals("openStream"))) {
+    if (method.getClassReference().getName().equals("java/net/URL")
+            && (method.getName().equals("openConnection") || method.getName().equals("openStream"))) {
       return true;
     }
     if (method.getClassReference().getName().equals("org/apache/http/impl/client/CloseableHttpClient")
+            && method.getName().equals("execute")) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("org/apache/http/client/fluent/Request")
             && method.getName().equals("execute")) {
       return true;
     }
@@ -667,8 +672,44 @@ public class GadgetChainDiscovery {
             && method.getName().equals("executeMethod")) {
       return true;
     }
-    if (method.getClassReference().getName().equals("Ljava/net/URLConnection")
+    if (method.getClassReference().getName().equals("java/net/URLConnection")
             && (method.getName().equals("connect") || method.getName().equals("getInputStream"))) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("org/jsoup/Jsoup")
+            && method.getName().equals("connect")) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("com/squareup/okhttp/Call")
+            && method.getName().equals("execute")) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("org/apache/commons/io/IOUtils")
+            && method.getName().equals("toByteArray")) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("org/apache/http/impl/nio/client/CloseableHttpAsyncClient")
+            && method.getName().equals("execute")) {
+      return true;
+    }
+
+    //SSTI
+    if (method.getClassReference().getName().equals("org/apache/velocity/app/Velocity")
+            && (method.getName().equals("evaluate") || method.getName().equals("mergeTemplate"))) {
+      return true;
+    }
+
+    //XXE
+    if (method.getClassReference().getName().equals("org/jdom2/input/SAXBuilder")
+            && method.getName().equals("build")) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("org/apache/commons/digester3/Digester")
+            && method.getName().equals("parse")) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("org/dom4j/DocumentHelper")
+            && method.getName().equals("parseText")) {
       return true;
     }
     return false;
@@ -708,8 +749,7 @@ public class GadgetChainDiscovery {
     if ((
         inheritanceMap.isSubclassOf(method.getClassReference(),
             new ClassReference.Handle("org/dom4j/io/SAXReader"))
-    )
-        && method.getName().equals("read")) {
+    ) && method.getName().equals("read")) {
       return true;
     }
     if ((
@@ -750,8 +790,7 @@ public class GadgetChainDiscovery {
     if ((
         inheritanceMap.isSubclassOf(method.getClassReference(),
             new ClassReference.Handle("org/xml/sax/XMLReader"))
-    )
-        && method.getName().equals("parse")) {
+    ) && method.getName().equals("parse")) {
       return true;
     }
     return false;
