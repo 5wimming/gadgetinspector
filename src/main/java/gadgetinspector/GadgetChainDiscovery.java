@@ -589,11 +589,8 @@ public class GadgetChainDiscovery {
         && (method.getName().equals("newInputStream")
         || method.getName().equals("newOutputStream")
         || method.getName().equals("newBufferedReader")
-        || method.getName().equals("newBufferedWriter"))) {
-      return true;
-    }
-    if (method.getClassReference().getName().equals("java/nio/file/Files") && (method.getName()
-            .equals("newOutputStream"))) {
+        || method.getName().equals("newBufferedWriter")
+        || method.getName().equals("readAllBytes"))) {
       return true;
     }
     if (method.getClassReference().getName().equals("java/nio/file/Paths") && method.getName().equals("get")) {
@@ -690,6 +687,10 @@ public class GadgetChainDiscovery {
     }
     if (method.getClassReference().getName().equals("org/apache/http/impl/nio/client/CloseableHttpAsyncClient")
             && method.getName().equals("execute")) {
+      return true;
+    }
+    if (method.getClassReference().getName().equals("org/springframework/web/client/RestTemplate")
+            && method.getName().equals("exchange")) {
       return true;
     }
 
