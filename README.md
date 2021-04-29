@@ -9,7 +9,7 @@ webservice
 --similarLevel
 4
 --maxRepeatBranchesTimes
-50
+100
 --skipSourcesFile
 /myGadgetinspector/webservice-skip-sources.demo
 /temp/halo.jar
@@ -23,7 +23,7 @@ webservice
 文件说明：
 webservice-skip-sources.demo为需要忽略的路由类
 
-如halo开源项目扫描结果如下：
+如halo开源项目扫描结果如下(下面利用链有目录遍历漏洞，已报给厂商)：
 ```
 Using classpath: [/temp/halo.jar]
 run/halo/app/controller/admin/api/BackupController.getMarkdownBackup(Ljava/lang/String;)Lrun/halo/app/model/dto/BackupDTO; (0)
