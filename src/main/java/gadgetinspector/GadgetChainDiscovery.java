@@ -836,6 +836,18 @@ public class GadgetChainDiscovery {
             argIndex == 2 && method.getName().equals("createValueExpression")) {
       return true;
     }
+    // 20210428
+    if ((inheritanceMap.isSubclassOf(method.getClassReference(),
+            new ClassReference.Handle("org/thymeleaf/standard/expression/StandardExpressionParser"))
+    ) && method.getName().equals("parseExpression")) {
+      return true;
+    }
+    // 最终slink点StandardExpressionParser，将slink提前
+    if (method.getClassReference().getName().equals("org/springframework/web/servlet/DispatcherServlet")
+            && (method.getName().equals("render"))) {
+      return true;
+    }
+
     return false;
   }
 

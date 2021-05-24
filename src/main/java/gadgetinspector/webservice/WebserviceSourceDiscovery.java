@@ -66,6 +66,9 @@ public class WebserviceSourceDiscovery extends SourceDiscovery {
                         || methodValue.getMethodAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/GetMapping")
                         || methodValue.getMethodAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/PostMapping")
                         || methodValue.getParameterAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/RequestParam")
+                        || methodValue.getMethodAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/PutMapping")
+                        || methodValue.getMethodAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/PatchMapping")
+                        || methodValue.getParameterAnnotationDesc().contains("Lorg/springframework/web/bind/annotation/DeleteMapping")
                         || methodValue.getParameterAnnotationDesc().contains("Ljavax/ws/rs/QueryParam")
                         || methodValue.getParameterAnnotationDesc().contains("Ljavax/ws/PathParam")))
                 {
