@@ -9,7 +9,7 @@ webservice
 --similarLevel
 4
 --maxRepeatBranchesTimes
-100
+10
 --skipSourcesFile
 /myGadgetinspector/webservice-skip-sources.demo
 /temp/halo.jar
