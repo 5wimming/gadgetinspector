@@ -158,8 +158,7 @@ public class GadgetChainDiscovery {
               && ConfigHelper.taintTrack) {
             continue;
           }
-          if (graphCall.getCallerMethod().getClassReference().getName().contains("org/controller/XXE")
-                  && graphCall.getCallerMethod().getName().contains("SAXReader")){
+          if (graphCall.getCallerMethod().getClassReference().getName().contains("org/sec/cidemo/web/RCEController")){
             System.out.println("test by 5wimming");
           }
 
