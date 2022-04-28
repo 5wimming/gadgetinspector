@@ -57,7 +57,7 @@ public class WebserviceSourceDiscovery extends SourceDiscovery {
                         && (method.getDesc().contains("Ljavax/servlet/http/HttpServletRequest")
                         || method.getDesc().contains("Ljavax/servlet/ServletRequest")
                         || method.getDesc().contains("Ljavax/xml/ws/handler/soap/SOAPMessageContext")
-                        // || method.getDesc().contains("Ljavax/xml/ws/handler/MessageContext")
+                        || method.getDesc().contains("Ljavax/xml/ws/handler/MessageContext")
                         || method.getDesc().contains("Ljavax/xml/rpc/handler/soap/SOAPMessageContext")
                         || method.getDesc().contains("Lorg/apache/cxf/message/Message")
                         || method.getDesc().contains("Lorg/aopalliance/intercept/MethodInvocation")
@@ -74,6 +74,11 @@ public class WebserviceSourceDiscovery extends SourceDiscovery {
                 {
                     addDiscoveredSource(new Source(method, 0));
                 }
+//                if (!method.getName().contains("<init>")
+//                        && (method.getClassReference().getName().contains("org/springframework/web/method/support/InvocableHandlerMethod")))
+//                {
+//                    addDiscoveredSource(new Source(method, 0));
+//                }
             }
         }
     }
