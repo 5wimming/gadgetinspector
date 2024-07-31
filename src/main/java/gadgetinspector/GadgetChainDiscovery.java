@@ -497,7 +497,7 @@ public class GadgetChainDiscovery {
             && method.getName().equals("readObject")) {
       return true;
     }
-    if (method.getClassReference().getName().equals("org/ymal/snakeyaml/Yaml")
+    if (method.getClassReference().getName().equals("org/yaml/snakeyaml/Yaml")
             && method.getName().equals("<init>")) {
       return true;
     }
